@@ -5,7 +5,7 @@ const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Fokhrul Store</h3>
+            <h3 className="text-lg font-semibold mb-4">NextBuy </h3>
             <p className="text-gray-300 text-sm">
               Your trusted online shopping destination for quality products at
               great prices.
@@ -70,7 +70,7 @@ const Footer: React.FC = () => {
         {/* Copyright */}
         <div className="border-t border-gray-700 mt-8 pt-6 text-center">
           <p className="text-gray-400 text-sm">
-            © 2024 Fokhrul Store. All rights reserved.
+            © 2024 NextBuy Store. All rights reserved.
           </p>
         </div>
       </div>

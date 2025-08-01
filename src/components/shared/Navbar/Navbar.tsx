@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
           {/* Banner/Logo */}
           <div className="flex-shrink-0">
             <Link href={"/"} className="text-2xl font-bold text-gray-900">
-              Fokhrul
+              NextBuy
             </Link>
           </div>
 

@@ -5,7 +5,11 @@ interface TitleProps {
 }
 
 const Title: React.FC<TitleProps> = ({ children }) => {
-  return <h1 className="text-3xl font-bold">{children}</h1>;
+  return (
+    <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent py-4">
+      {children}
+    </h1>
+  );
 };
 
 export default Title;

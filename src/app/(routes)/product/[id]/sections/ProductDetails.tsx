@@ -1,24 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import Head from "next/head";
 
-// Static product data
-const product = {
-  id: 1,
-  title: "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-  price: 109.95,
-  description:
-    "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
-  category: "men's clothing",
-  image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-  rating: {
-    rate: 3.9,
-    count: 120,
-  },
-};
-
-const ProductDetails: React.FC = () => {
+interface ProductDetailsProps {
+  product: ProductProps;
+}
+interface ProductProps {
+  id: number;
+  price: number;
+  title: string;
+  description: string;
+  category: string;
+  image: string;
+  rating: { rate: number; count: number };
+}
+const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
 
   const handleAddToCart = () => {
@@ -58,14 +54,6 @@ const ProductDetails: React.FC = () => {
 
   return (
     <>
-      <Head>
-        <title>{product.title} - Fokhrul Store</title>
-        <meta
-          name="description"
-          content={`${product.description} - Only $${product.price} at Fokhrul Store. Shop now!`}
-        />
-      </Head>
-
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Product Image */}
@@ -154,40 +142,5 @@ const ProductDetails: React.FC = () => {
     </>
   );
 };
-
-// Static Site Generation functions (for Next.js)
-export async function getStaticPaths() {
-  // In a real app, you'd fetch all product IDs
-  const paths = [{ params: { id: "1" } }];
-
-  return {
-    paths,
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }: { params: { id: string } }) {
-  // In a real app, you'd fetch the product by ID
-  // For now, we're using static data
-  const productData = {
-    id: 1,
-    title: "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
-    price: 109.95,
-    description:
-      "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
-    category: "men's clothing",
-    image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
-    rating: {
-      rate: 3.9,
-      count: 120,
-    },
-  };
-
-  return {
-    props: {
-      product: productData,
-    },
-  };
-}
 
 export default ProductDetails;
