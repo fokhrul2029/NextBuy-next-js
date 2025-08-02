@@ -16,22 +16,28 @@ interface Order {
   }[];
 }
 
+interface RootState {
+  order: {
+    orders: Order[];
+  };
+}
+
 const OrderSection: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
 
-  const orders = useSelector((s: any) => s.order.orders);
+  const orders = useSelector((state: RootState) => state.order.orders);
 
   console.log(orders);
 
-  const handleOrderClick = (order: Order) => {
+  const handleOrderClick = (order: Order): void => {
     setSelectedOrder(order);
   };
 
-  const handleCloseDetails = () => {
+  const handleCloseDetails = (): void => {
     setSelectedOrder(null);
   };
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string): string => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
@@ -66,7 +72,7 @@ const OrderSection: React.FC = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {orders.map((order: any) => (
+            {orders.map((order: Order) => (
               <tr
                 key={order.id}
                 onClick={() => handleOrderClick(order)}
@@ -79,10 +85,14 @@ const OrderSection: React.FC = () => {
                   {order.fullName}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {order.items.length()}
+                  {order.items.length}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                  ${order.totalAmount}
+                  $
+                  {order.items.reduce(
+                    (sum, item) => sum + item.price * item.quantity,
+                    0
+                  )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   {formatDate(order.createdAt)}
@@ -95,8 +105,8 @@ const OrderSection: React.FC = () => {
 
       {/* Order Details Modal */}
       {selectedOrder && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-2xl w-full max-h-96 overflow-y-auto">
+        <div className="fixed inset-0 bg-[#0008] bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-2xl w-full max-h-11/12 overflow-y-auto">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold">Order Details</h2>
@@ -127,7 +137,11 @@ const OrderSection: React.FC = () => {
                 <div>
                   <p className="text-sm text-gray-500">Total Amount</p>
                   <p className="font-semibold text-blue-600">
-                    ${selectedOrder.totalAmount}
+                    $
+                    {selectedOrder.items.reduce(
+                      (sum, item) => sum + item.price * item.quantity,
+                      0
+                    )}
                   </p>
                 </div>
               </div>
