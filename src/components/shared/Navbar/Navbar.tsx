@@ -47,9 +47,6 @@ const Navbar: React.FC = () => {
                 onClick={() => setIsCartOpen(true)}
                 className="text-gray-700 hover:text-blue-600 font-medium cursor-pointer transition-colors duration-200 px-3 py-2 rounded-lg bg-blue-50 hover:bg-blue-50 relative"
               >
-                <span className="absolute -top-[10px] -right-1 bg-[#423c9c8a] text-gray-700 rounded-full px-[5px] text-xs ">
-                  5
-                </span>
                 <MdShoppingCart />
               </li>
             </ul>

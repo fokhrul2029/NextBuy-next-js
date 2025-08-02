@@ -3,7 +3,7 @@ const Banner: React.FC = () => {
     <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-30 px-4">
       <div className="max-w-7xl mx-auto text-center">
         <h1 className="text-4xl md:text-6xl font-bold mb-6">
-          Welcome to Fokhrul Store
+          Welcome to NextBuy Store
         </h1>
         <p className="text-xl md:text-2xl mb-8 text-blue-100">
           Discover amazing products at unbeatable prices

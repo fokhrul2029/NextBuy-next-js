@@ -1,5 +1,7 @@
 "use client";
 
+import OrderInfo from "../components/OrderInfo";
+
 interface OrderItem {
   name: string;
   quantity: number;
@@ -38,38 +40,27 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
   );
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-[#00000083] bg-opacity-50 flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-xl">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold">Order Details</h2>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 text-2xl transition-colors"
+              className="text-gray-500 hover:text-gray-700 text-2xl transition-colors cursor-pointer"
             >
               &times;
             </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div className="space-y-1">
-              <p className="text-sm text-gray-500">Order #</p>
-              <p className="font-mono font-semibold">{order.id}</p>
-            </div>
-            <div className="space-y-1">
-              <p className="text-sm text-gray-500">Customer</p>
-              <p className="font-semibold">{order.fullName}</p>
-            </div>
-            <div className="space-y-1">
-              <p className="text-sm text-gray-500">Date & Time</p>
-              <p className="font-semibold">{formatDate(order.createdAt)}</p>
-            </div>
-            <div className="space-y-1">
-              <p className="text-sm text-gray-500">Total Amount</p>
-              <p className="font-semibold text-green-600">
-                ${totalAmount.toFixed(2)}
-              </p>
-            </div>
+            <OrderInfo title="Order #" order={order.id} />
+            <OrderInfo title="Customer" order={order.fullName} />
+            <OrderInfo title="Date & Time" order={order.createdAt} />
+            <OrderInfo
+              title="Total Amount"
+              order={`$${totalAmount.toFixed(2)}`}
+            />
           </div>
 
           <div className="border-t border-gray-200 pt-4">
@@ -100,7 +91,7 @@ const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
           <div className="mt-8 pt-4 border-t">
             <button
               onClick={onClose}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors duration-200"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors duration-200 cursor-pointer"
             >
               Close Details
             </button>

@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/components/Spinner";
 import { addToCart } from "@/redux/cartSlice";
 import { useGetProductByIdQuery } from "@/redux/store/api";
 import { useState } from "react";
@@ -46,7 +47,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ id }) => {
     isError: boolean;
   };
 
-  if (isLoading || !product) return <h1>Loading...</h1>;
+  if (isLoading || !product) return <Spinner />;
   if (isError) return <h1>Error...</h1>;
 
   // Check if product is already in cart
