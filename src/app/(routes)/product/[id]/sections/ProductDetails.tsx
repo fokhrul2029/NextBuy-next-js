@@ -1,6 +1,8 @@
 "use client";
 
+import { addToCart } from "@/redux/cartSlice";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 interface ProductDetailsProps {
   product: ProductProps;
@@ -16,10 +18,19 @@ interface ProductProps {
 }
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
-
+  const dispatch = useDispatch();
   const handleAddToCart = () => {
     setIsAddedToCart(true);
     // Reset after 2 seconds for demo
+    dispatch(
+      addToCart({
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        quantity: 1,
+      })
+    );
+
     setTimeout(() => setIsAddedToCart(false), 2000);
   };
 
