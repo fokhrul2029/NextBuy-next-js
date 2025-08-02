@@ -53,7 +53,15 @@ const Navbar: React.FC = () => {
           </div>
 
           {/* Hamburger Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-4">
+            <ul>
+              <li
+                onClick={() => setIsCartOpen(true)}
+                className="text-gray-700 hover:text-blue-600 font-medium cursor-pointer transition-colors duration-200 px-3 py-2 rounded-lg bg-blue-50 hover:bg-blue-50 relative"
+              >
+                <MdShoppingCart />
+              </li>
+            </ul>
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-gray-700 hover:text-blue-600 focus:outline-none focus:text-blue-600 cursor-pointer"

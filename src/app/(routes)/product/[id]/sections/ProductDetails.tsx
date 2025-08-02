@@ -5,6 +5,7 @@ import { addToCart } from "@/redux/cartSlice";
 import { useGetProductByIdQuery } from "@/redux/store/api";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 interface ProductDetailsProps {
   id: string;
@@ -55,7 +56,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ id }) => {
 
   const handleAddToCart = (): void => {
     if (isInCart) {
-      alert("Product is already in cart!");
+      Swal.fire({
+        title: "Product is already in cart!",
+        icon: "info",
+      });
       return;
     }
 
@@ -69,7 +73,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ id }) => {
       })
     );
 
-    alert("Product added to cart!");
+    Swal.fire({
+      title: "Product added to cart!",
+      icon: "success",
+    });
     setTimeout(() => setIsAddedToCart(false), 2000);
   };
 
