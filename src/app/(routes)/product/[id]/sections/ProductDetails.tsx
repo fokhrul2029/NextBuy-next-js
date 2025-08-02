@@ -3,7 +3,7 @@
 import { addToCart } from "@/redux/cartSlice";
 import { useGetProductByIdQuery } from "@/redux/store/api";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 interface ProductDetailsProps {
   id: string;
@@ -19,10 +19,22 @@ interface Product {
   rating: { rate: number; count: number };
 }
 
+interface RootState {
+  cart: {
+    items: Array<{
+      id: number;
+      title: string;
+      price: number;
+      quantity: number;
+    }>;
+  };
+}
+
 const ProductDetails: React.FC<ProductDetailsProps> = ({ id }) => {
   const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
 
   const dispatch = useDispatch();
+  const cartItems = useSelector((state: RootState) => state.cart.items);
 
   const {
     data: product,
@@ -37,7 +49,15 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ id }) => {
   if (isLoading || !product) return <h1>Loading...</h1>;
   if (isError) return <h1>Error...</h1>;
 
+  // Check if product is already in cart
+  const isInCart = cartItems.some((item) => item.id === product.id);
+
   const handleAddToCart = (): void => {
+    if (isInCart) {
+      alert("Product is already in cart!");
+      return;
+    }
+
     setIsAddedToCart(true);
     dispatch(
       addToCart({
@@ -48,6 +68,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ id }) => {
       })
     );
 
+    alert("Product added to cart!");
     setTimeout(() => setIsAddedToCart(false), 2000);
   };
 
@@ -133,12 +154,19 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ id }) => {
               <button
                 onClick={handleAddToCart}
                 className={`w-full md:w-auto px-8 py-3 rounded-lg font-semibold text-lg transition duration-300 ${
-                  isAddedToCart
+                  isInCart
+                    ? "bg-gray-400 text-white cursor-not-allowed"
+                    : isAddedToCart
                     ? "bg-green-600 text-white"
                     : "bg-blue-600 hover:bg-blue-700 text-white"
                 }`}
+                disabled={isInCart}
               >
-                {isAddedToCart ? "✓ Added to Cart!" : "Add to Cart"}
+                {isInCart
+                  ? "Already in Cart"
+                  : isAddedToCart
+                  ? "✓ Added to Cart!"
+                  : "Add to Cart"}
               </button>
             </div>
 
