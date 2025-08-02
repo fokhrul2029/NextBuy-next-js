@@ -1,13 +1,15 @@
 "use client";
 
 import { addToCart } from "@/redux/cartSlice";
+import { useGetProductByIdQuery } from "@/redux/store/api";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 interface ProductDetailsProps {
-  product: ProductProps;
+  id: string;
 }
-interface ProductProps {
+
+interface Product {
   id: number;
   price: number;
   title: string;
@@ -16,12 +18,27 @@ interface ProductProps {
   image: string;
   rating: { rate: number; count: number };
 }
-const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
-  const [isAddedToCart, setIsAddedToCart] = useState(false);
+
+const ProductDetails: React.FC<ProductDetailsProps> = ({ id }) => {
+  const [isAddedToCart, setIsAddedToCart] = useState<boolean>(false);
+
   const dispatch = useDispatch();
-  const handleAddToCart = () => {
+
+  const {
+    data: product,
+    isLoading,
+    isError,
+  } = useGetProductByIdQuery(id) as {
+    data: Product | undefined;
+    isLoading: boolean;
+    isError: boolean;
+  };
+
+  if (isLoading || !product) return <h1>Loading...</h1>;
+  if (isError) return <h1>Error...</h1>;
+
+  const handleAddToCart = (): void => {
     setIsAddedToCart(true);
-    // Reset after 2 seconds for demo
     dispatch(
       addToCart({
         id: product.id,

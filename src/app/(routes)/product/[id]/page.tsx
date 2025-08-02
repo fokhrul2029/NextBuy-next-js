@@ -1,27 +1,28 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import ProductDetails from "./sections/ProductDetails";
 
-type Params = { id: number };
+type Params = Promise<{ id: string }>;
+type Product = { title: string; description?: string };
 
 const API_BASE = "https://fakestoreapi.com";
+
+async function getProduct(id: string): Promise<Product> {
+  const res = await fetch(`${API_BASE}/products/${id}`);
+  if (!res.ok) notFound();
+  return res.json();
+}
+
 export async function generateMetadata({
   params,
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const res = await fetch(`${API_BASE}/products/${params.id}`);
-
-  if (!res.ok) {
-    return {
-      title: "Product not found",
-    };
-  }
-
-  const product: { title: string; description?: string } = await res.json();
-
+  const { id } = await params;
+  const product = await getProduct(id);
   return {
-    title: `${product.title}`,
-    description: product.description?.substring(0, 160) || undefined,
+    title: product.title,
+    description: product.description?.substring(0, 160),
     openGraph: {
       title: product.title,
       description: product.description,
@@ -30,19 +31,11 @@ export async function generateMetadata({
 }
 
 export default async function ProductPage({ params }: { params: Params }) {
-  const res = await fetch(`${API_BASE}/products/${params.id}`, {
-    cache: "no-store",
-  });
-
-  if (!res.ok) {
-    return <div>Product not found.</div>;
-  }
-
-  const product: any = await res.json();
+  const { id } = await params;
 
   return (
     <div>
-      <ProductDetails product={product} />
+      <ProductDetails id={id} />
     </div>
   );
 }

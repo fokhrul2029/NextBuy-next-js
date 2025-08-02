@@ -1,14 +1,18 @@
 import Link from "next/link";
 import { FaBangladeshiTakaSign } from "react-icons/fa6";
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  total: number;
+}
+
+const Footer: React.FC<FooterProps> = ({ total }) => {
   return (
     <>
       <div className="flex justify-between items-center p-4 border border-gray-200 rounded bg-white shadow space-x-4">
         <span className="text-lg font-semibold text-gray-800">Total:</span>
         <p className="text-2xl font-bold text-blue-600 flex items-center">
           <FaBangladeshiTakaSign />
-          <span>4545</span>
+          <span>{total}</span>
         </p>
         <Link
           href="/checkout"

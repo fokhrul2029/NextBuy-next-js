@@ -1,69 +1,14 @@
 "use client";
 
 import { useState } from "react";
-
-const orders = [
-  {
-    id: "ORD-001",
-    customerName: "John Smith",
-    totalItems: 3,
-    totalAmount: 299.85,
-    orderDate: "2024-08-01",
-    items: [
-      { name: "Fjallraven Backpack", quantity: 1, price: 109.95 },
-      { name: "Cotton T-Shirt", quantity: 2, price: 94.95 },
-    ],
-  },
-  {
-    id: "ORD-002",
-    customerName: "Sarah Johnson",
-    totalItems: 2,
-    totalAmount: 159.9,
-    orderDate: "2024-08-01",
-    items: [
-      { name: "Wireless Headphones", quantity: 1, price: 79.95 },
-      { name: "Phone Case", quantity: 1, price: 79.95 },
-    ],
-  },
-  {
-    id: "ORD-003",
-    customerName: "Mike Wilson",
-    totalItems: 1,
-    totalAmount: 49.99,
-    orderDate: "2024-07-31",
-    items: [{ name: "Coffee Mug", quantity: 1, price: 49.99 }],
-  },
-  {
-    id: "ORD-004",
-    customerName: "Emily Davis",
-    totalItems: 4,
-    totalAmount: 399.8,
-    orderDate: "2024-07-31",
-    items: [
-      { name: "Running Shoes", quantity: 1, price: 129.99 },
-      { name: "Sports Shirt", quantity: 2, price: 89.95 },
-      { name: "Water Bottle", quantity: 1, price: 89.91 },
-    ],
-  },
-  {
-    id: "ORD-005",
-    customerName: "David Brown",
-    totalItems: 2,
-    totalAmount: 199.9,
-    orderDate: "2024-07-30",
-    items: [
-      { name: "Bluetooth Speaker", quantity: 1, price: 99.95 },
-      { name: "Charging Cable", quantity: 1, price: 99.95 },
-    ],
-  },
-];
+import { useSelector } from "react-redux";
 
 interface Order {
   id: string;
-  customerName: string;
+  fullName: string;
   totalItems: number;
   totalAmount: number;
-  orderDate: string;
+  createdAt: string;
   items: {
     name: string;
     quantity: number;
@@ -73,6 +18,10 @@ interface Order {
 
 const OrderSection: React.FC = () => {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+
+  const orders = useSelector((s: any) => s.order.orders);
+
+  console.log(orders);
 
   const handleOrderClick = (order: Order) => {
     setSelectedOrder(order);
@@ -117,7 +66,7 @@ const OrderSection: React.FC = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {orders.map((order) => (
+            {orders.map((order: any) => (
               <tr
                 key={order.id}
                 onClick={() => handleOrderClick(order)}
@@ -127,16 +76,16 @@ const OrderSection: React.FC = () => {
                   {order.id}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {order.customerName}
+                  {order.fullName}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {order.totalItems}
+                  {order.items.length()}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
-                  ${order.totalAmount.toFixed(2)}
+                  ${order.totalAmount}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {formatDate(order.orderDate)}
+                  {formatDate(order.createdAt)}
                 </td>
               </tr>
             ))}
@@ -167,18 +116,18 @@ const OrderSection: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Customer</p>
-                  <p className="font-semibold">{selectedOrder.customerName}</p>
+                  <p className="font-semibold">{selectedOrder.fullName}</p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Order Date</p>
                   <p className="font-semibold">
-                    {formatDate(selectedOrder.orderDate)}
+                    {formatDate(selectedOrder.createdAt)}
                   </p>
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Total Amount</p>
                   <p className="font-semibold text-blue-600">
-                    ${selectedOrder.totalAmount.toFixed(2)}
+                    ${selectedOrder.totalAmount}
                   </p>
                 </div>
               </div>
@@ -199,11 +148,9 @@ const OrderSection: React.FC = () => {
                         </p>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold">
-                          ${item.price.toFixed(2)}
-                        </p>
+                        <p className="font-semibold">${item.price}</p>
                         <p className="text-sm text-gray-500">
-                          ${(item.price * item.quantity).toFixed(2)} total
+                          ${item.price * item.quantity} total
                         </p>
                       </div>
                     </div>
