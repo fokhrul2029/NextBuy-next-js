@@ -7,10 +7,19 @@ type Product = { title: string; description?: string };
 
 const API_BASE = "https://fakestoreapi.com";
 
+const productCache = new Map<string, Product>();
+
 async function getProduct(id: string): Promise<Product> {
-  const res = await fetch(`${API_BASE}/products/${id}`);
+  if (productCache.has(id)) {
+    return productCache.get(id)!;
+  }
+  const res = await fetch(`${API_BASE}/products/${id}`, {
+    next: { revalidate: 60 },
+  });
   if (!res.ok) notFound();
-  return res.json();
+  const product: Product = await res.json();
+  productCache.set(id, product);
+  return product;
 }
 
 export async function generateMetadata({
